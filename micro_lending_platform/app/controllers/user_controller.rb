@@ -79,9 +79,8 @@ class UserController < ApplicationController
 
     response = HTTParty.post(XFERS_CREATE_CHARGE, {
       headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
-      body: request_params
+      body: charge_params
     })
-
   end
 
 end

@@ -4,5 +4,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable
 
 
+  # attr_accessor authentication_keys: "phone_number"
 
 end
