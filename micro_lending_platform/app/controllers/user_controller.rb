@@ -5,7 +5,7 @@ class UserController < ApplicationController
   # -H "Content-Type: application/json" \
   # -d '{"phone_no" : "+6597288608", "signature" : "178502abfa891b69a9a2f72192d51f5fc141f978"}'
   def generate_otp
-    phone_number = current_user.phone_number
+    phone_number = "+6584700012"current_user.phone_number
     request_params = {
       phone_no: phone_number,
       signature: Digest::SHA1.hexdigest("#{phone_number}#{X_XFERS_APP_SECRET_KEY}")
@@ -58,6 +58,9 @@ class UserController < ApplicationController
 
   def info
 
+    # 'GET/v3/user/activities'
+
+    render json: @current_user, status: ok
   end
 
 end
