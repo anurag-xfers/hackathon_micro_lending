@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200417042345) do
+ActiveRecord::Schema.define(version: 20200417050055) do
+
+  create_table "loans", force: :cascade do |t|
+    t.integer  "amount",         limit: 4
+    t.integer  "period_in_days", limit: 4
+    t.float    "roi",            limit: 24
+    t.text     "description",    limit: 65535
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false

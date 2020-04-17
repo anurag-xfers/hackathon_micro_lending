@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :loans
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -56,18 +57,45 @@ Rails.application.routes.draw do
   #   end
 
   root to: "home#index"
-  
+
 # Requirement
 # /register (POST, formdata = {fname, lname, email, password})
 # /login (POST, {username, password})
+
 # /loans (POST, {period, roi, amt, description, extra: {}})
+
+# loan current
+# 1. people asked loans -> not me loan creator
+
+
 # /loans/:id (GET, {id}) -> Returns the information of a given loan
 # /loans (GET, params = {limit, page}) -> Returns all available loan requests sorted by time
+
 # /credit_score (GET) -> Returns the credit score associated with the current user
 # /flag_user (POST, {user_id, reason}) -> Flags a user for particular reason, may decrease their trust score
 # /invest (POST, {loan_id, amt, extra: {}}) -> Invests the amount on a particular loan.
 
 
+# loan current
+# 1. people asked loans -> not me loan creator
+
+# Step 1
+# IMP
+# https://github.com/Xfers/xfers-sdk/wiki/Backend-requirements-for-SDK#loginsignup-to-xfers
+# post user/generate_otp
+# post verify_otp body:{otp=541231}
+# save user token from above
+
+# Step 2
+# https://github.com/Xfers/xfers-sdk/wiki/Backend-requirements-for-SDK#loginsignup-to-xfers
+# /get_user_info
+
+
+# Step 3
+# This api will use https://docs.xfers.io/Singapore#tag/Charge
+# create charge and payout
+# post /invest/:loan_id body{amount: 10}
+# transfer his asked money to loan creator
 
 
 end
