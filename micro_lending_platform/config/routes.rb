@@ -79,10 +79,15 @@ Rails.application.routes.draw do
 # loan current
 # 1. people asked loans -> not me loan creator
 
+# User controller
 # Step 1
 # IMP
 # https://github.com/Xfers/xfers-sdk/wiki/Backend-requirements-for-SDK#loginsignup-to-xfers
 # post user/generate_otp
+
+post 'user/generate_otp' => 'user#generate_otp'
+post 'user/verify_otp' => 'user#verify_otp'
+
 # post verify_otp body:{otp=541231}
 # save user token from above
 
