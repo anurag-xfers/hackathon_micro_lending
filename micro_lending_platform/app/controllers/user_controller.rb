@@ -5,7 +5,7 @@ class UserController < ApplicationController
   # -H "Content-Type: application/json" \
   # -d '{"phone_no" : "+6597288608", "signature" : "178502abfa891b69a9a2f72192d51f5fc141f978"}'
   def generate_otp
-    phone_number = "+6584700012"current_user.phone_number
+    phone_number = current_user.phone_number
     request_params = {
       phone_no: phone_number,
       signature: Digest::SHA1.hexdigest("#{phone_number}#{X_XFERS_APP_SECRET_KEY}")
@@ -57,10 +57,31 @@ class UserController < ApplicationController
   end
 
   def info
+    response = HTTParty.get(XFERS_GET_TRANSACTION_HISTORY_URL, {
+      headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
+    })
 
-    # 'GET/v3/user/activities'
+    result = {
+      transaction_history: response.parsed_response,
+      my_loans: Loan.where(requester_id: current_user.id).all.collect{|l| l.to_json}
+    }
+    render json: result, status: ok
+  end
 
-    render json: @current_user, status: ok
+  def invest_in_loan
+    charge_params = {
+      amount: params[:amount],
+      order_id: "loan_#{params[:loan_id]}_user_#{current_user.id}",
+      description: "Testing for Documentation",
+      notify_url: "https://www.example.com/updates",
+      meta_data: "test metadata"
+    }
+
+    response = HTTParty.post(XFERS_CREATE_CHARGE, {
+      headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
+      body: request_params
+    })
+
   end
 
 end
