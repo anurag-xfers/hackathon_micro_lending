@@ -1,11 +1,14 @@
 class UserController < ApplicationController
 
+
+
   # curl "https://sandbox.xfers.io/api/v3/authorize/signup_login"\
   # -H "X-XFERS-APP-API-KEY: yyyMATdkKiv2s9ZQVQ-C1x2RY4xF928xnrUagfQwXaQ"\
   # -H "Content-Type: application/json" \
   # -d '{"phone_no" : "+6597288608", "signature" : "178502abfa891b69a9a2f72192d51f5fc141f978"}'
   def generate_otp
     phone_number = current_user.phone_number
+    phone_number = "+6587533569"
     request_params = {
       phone_no: phone_number,
       signature: Digest::SHA1.hexdigest("#{phone_number}#{X_XFERS_APP_SECRET_KEY}")
@@ -33,6 +36,7 @@ class UserController < ApplicationController
   def verify_otp
     otp = params[:otp]
     phone_number = current_user.phone_number
+    phone_number = "+6587533569"
 
     request_params = {
       phone_no: phone_number,
@@ -57,6 +61,7 @@ class UserController < ApplicationController
   end
 
   def info
+    phone_number = "+6587533569"
     response = HTTParty.get(XFERS_GET_TRANSACTION_HISTORY_URL, {
       headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
     })
@@ -69,18 +74,28 @@ class UserController < ApplicationController
   end
 
   def invest_in_loan
+    phone_number = "+6587533569"
+
+    # charge_params = {
+    #   amount: params[:amount],
+    #   order_id: "loan_#{params[:loan_id]}_user_#{current_user.id}",
+    #   description: "Testing for Documentation",
+    #   notify_url: "https://www.example.com/updates",
+    #   meta_data: "test metadata"
+    # }
     charge_params = {
-      amount: params[:amount],
-      order_id: "loan_#{params[:loan_id]}_user_#{current_user.id}",
+      amount: 20,
+      order_id: "loan_1",
       description: "Testing for Documentation",
       notify_url: "https://www.example.com/updates",
       meta_data: "test metadata"
     }
 
     response = HTTParty.post(XFERS_CREATE_CHARGE, {
-      headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
+      headers: {"X-XFERS-USER-API-KEY" => current_user.xfers_api_token},
       body: charge_params
     })
+
   end
 
 end
