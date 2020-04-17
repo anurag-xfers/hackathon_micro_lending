@@ -5,7 +5,7 @@ class LoansController < ApplicationController
   # GET /loans.json
   def index
     #todo
-    @loans = Loan.where.not(requester_id: @current_user.id)
+    @loans = Loan.where.not(requester_id: current_user.id)
   end
 
   # GET /loans/1
