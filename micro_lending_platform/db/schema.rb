@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200417050055) do
+ActiveRecord::Schema.define(version: 20200417065028) do
 
   create_table "loans", force: :cascade do |t|
     t.integer  "amount",         limit: 4
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20200417050055) do
     t.datetime "remember_created_at"
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.string   "phone_number",           limit: 255
+    t.string   "xfers_api_token",        limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
