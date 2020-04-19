@@ -8,7 +8,7 @@ class UserController < ApplicationController
   # -d '{"phone_no" : "+6597288608", "signature" : "178502abfa891b69a9a2f72192d51f5fc141f978"}'
   def generate_otp
     phone_number = current_user.phone_number
-    phone_number = "+6587533569"
+    phone_number = "+6586895505"
     request_params = {
       phone_no: phone_number,
       signature: Digest::SHA1.hexdigest("#{phone_number}#{X_XFERS_APP_SECRET_KEY}")
@@ -34,9 +34,10 @@ class UserController < ApplicationController
   # {String} otp - [REQUIRED] 6 digit one-time-password sent to users through SMS
   # {String} signature - [REQUIRED] SHA1-hex of (phone_no + OTP + APP_SECRET_KEY)
   def verify_otp
-    otp = params[:otp]
-    phone_number = current_user.phone_number
-    phone_number = "+6587533569"
+    # otp = params[:otp]
+    otp = 313541
+    # phone_number = current_user.phone_number
+    phone_number = "+6586895505"
 
     request_params = {
       phone_no: phone_number,
@@ -91,11 +92,39 @@ class UserController < ApplicationController
       meta_data: "test metadata"
     }
 
+    # response = HTTParty.post(XFERS_CREATE_CHARGE, {
+    #   headers: {"X-XFERS-USER-API-KEY" => current_user.xfers_api_token},
+    #   body: charge_params
+    # })
+
     response = HTTParty.post(XFERS_CREATE_CHARGE, {
-      headers: {"X-XFERS-USER-API-KEY" => current_user.xfers_api_token},
+      headers: {"X-XFERS-USER-API-KEY" => User.last.xfers_api_token},
       body: charge_params
     })
 
+    #payout
+    # curl --location --request POST "$BASE_URL/v3/payouts" \
+    # --header "X-XFERS-APP-API-KEY: {{user-api-key}}" \
+    # --header "Content-Type: application/json" \
+    # --form "user_api_token=$CUSTOMER_API_KEY" \
+    # --form "amount=15000.00" \
+    # --form "invoice_id=Order_docs_123" \
+    # --form "descriptions=Payment for Rent for July"
+
+    X-XFERS-APP-API-KEY
+    user-api-token
+
+    payout_params = {
+      user_api_token: User.first.xfers_api_token,
+      amount: 2,
+      invoice_id: "Order_docs_12345",
+      description: "Testing for Documentation"
+    }
+
+    response = HTTParty.post(XFERS_PAYPOUT, {
+      headers: {"X-XFERS-APP-API-KEY" => X_XFERS_APP_API_KEY},
+      body: payout_params
+    })
   end
 
 end

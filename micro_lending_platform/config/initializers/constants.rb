@@ -8,3 +8,5 @@ XFERS_GET_TOKEN_URL = "https://sandbox.xfers.io/api/v3/authorize/get_token"
 XFERS_GET_TRANSACTION_HISTORY_URL = 'GET/v3/user/activities'
 
 XFERS_CREATE_CHARGE = "https://sandbox.xfers.io/api/v3/charges"
+
+XFERS_PAYPOUT = "https://sandbox.xfers.io/api/v3/payouts"
